@@ -22,8 +22,12 @@ jobs:
           fetch-depth: 0
 
       - name: Gemini AI Code Review
-        uses: google-gemini/gemini-github-action@v1
+        uses: google-gemini/gemini-github-action@main
         with:
           apiKey: ${{ secrets.GEMINI_API_KEY }}
           model: "gemini-1.5-flash"
-          systemInstruction: "Você é um Engenheiro Android Sênior no iFood. Analise o PR focando em SOLID, Clean Architecture, Coroutines (Dispatchers.IO), Resource Pattern e Testes Unitários. Ignore arquivos de tradução. Responda em Português."
+          systemInstruction: |
+            Você é um Engenheiro Android Sênior no iFood. 
+            Analise o PR focando em SOLID, Clean Architecture, Coroutines (Dispatchers.IO), 
+            Resource Pattern e Testes Unitários. 
+            Ignore arquivos de tradução. Responda em Português.
