@@ -7,6 +7,7 @@ on:
          - main
          - develop
          - 'feature/**'
+         - 'chore/**'
   pull_request:
          # Rodará quando um PR for aberto para a branch main
          branches: [ "main" ]
