@@ -9,20 +9,23 @@ import br.com.movie.movielist.domain.model.Movie
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 
 class MovieRepositoryImplTest {
 
+    private val testDispatcher = StandardTestDispatcher()
+
     private val service: MovieService = mockk()
     private val mapper: MovieMapper = mockk()
 
-    private val repository = MovieRepositoryImpl(service, mapper)
+    private val repository = MovieRepositoryImpl(service, mapper, testDispatcher)
 
     @Test
     fun `when getMyLists is called then it should emit correctly mapped movie list`() =
-        runBlocking {
+        runTest(testDispatcher) {
             val movieDto = MovieListItemResponse(
                 id = 1,
                 name = "Gladiador",
@@ -66,7 +69,7 @@ class MovieRepositoryImplTest {
         }
 
     @Test
-    fun `when getMyLists is called then it should emit empty mapped movie list`() = runBlocking {
+    fun `when getMyLists is called then it should emit empty mapped movie list`() = runTest(testDispatcher)  {
         val mockResponse = MovieListResponse(
             page = 1,
             totalPages = 0,
