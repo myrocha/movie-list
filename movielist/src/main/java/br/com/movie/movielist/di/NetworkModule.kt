@@ -1,8 +1,8 @@
 package br.com.movie.movielist.di
 
 import br.com.movie.movielist.BuildConfig
-import br.com.movie.movielist.data.MovieService
-import br.com.movie.movielist.data.remote.interceptors.AuthInterceptor
+import br.com.movie.movielist.data.service.MovieService
+import br.com.movie.movielist.network.AuthInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
