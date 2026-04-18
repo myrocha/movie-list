@@ -7,7 +7,8 @@ on:
          - main
          - develop
          - 'feature/**'
-       pull_request:
+         - 'chore/**'
+  pull_request:
          # Rodará quando um PR for aberto para a branch main
          branches: [ "main" ]
 
@@ -32,5 +33,5 @@ jobs:
       - name: Run Unit Tests
         env:
           # Injeta o token nas variáveis de ambiente do sistema para o Gradle ler
-          TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
+          TMDB_API_KEY: ${{ secrets.TMDB_TOKEN }}
         run: ./gradlew testDebugUnitTest
