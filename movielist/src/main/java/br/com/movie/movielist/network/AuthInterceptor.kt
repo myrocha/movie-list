@@ -1,4 +1,4 @@
-package br.com.movie.movielist.data.remote.interceptors
+package br.com.movie.movielist.network
 
 import okhttp3.Interceptor
 import okhttp3.Response
