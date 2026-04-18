@@ -1,0 +1,39 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '**.kt'
+      - '**.kts'
+      - '**.xml'
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gemini AI Code Review
+        uses: google-gemini/gemini-github-action@v1
+        with:
+          apiKey: ${{ secrets.GEMINI_API_KEY }}
+          model: "gemini-1.5-flash"
+          systemInstruction: |
+            Você é um Engenheiro Android Sênior e revisor de código no iFood. 
+            Sua tarefa é analisar Pull Requests focando em:
+            1. Clean Architecture e SOLID (DIP, ISP, SRP).
+            2. Coroutines/Flow: Verifique se Dispatchers.IO é usado para rede/DB e se não há bloqueio de Main Thread.
+            3. Resource Pattern: Garanta que Loading, Success e Error estão sendo tratados.
+            4. Compose: Verifique recomposições desnecessárias e uso de State.
+            5. Testes: Sugira testes unitários se a lógica de negócio (UseCase/Repository) não estiver coberta.
+            
+            IMPORTANTE: Ignore mudanças em arquivos de tradução (strings.xml) ou layouts XML simples, foque na lógica Kotlin.
+            Forneça feedbacks técnicos, diretos e em Português.
