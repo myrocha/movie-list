@@ -1,3 +1,4 @@
+import java.util.Properties
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -13,7 +14,19 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        buildConfigField("String", "TMDB_API_KEY", "\"9767c70b-e827-4d83-bc42-a64b3448e774\"")
+        val localProperties = Properties()
+
+        val localPropertiesFile = rootProject.projectDir.resolve("local.properties")
+
+        if (localPropertiesFile.exists()) {
+            localProperties.load(localPropertiesFile.inputStream())
+        }
+
+        val apiKey = localProperties.getProperty("TMDB_API_KEY")
+            ?: System.getenv("TMDB_API_KEY")
+            ?: ""
+
+        buildConfigField("String", "TMDB_API_KEY", "\"$apiKey\"")
     }
 
     buildFeatures {
@@ -60,5 +73,8 @@ dependencies {
     testImplementation(libs.okhttp.mockwebserver)
     testImplementation(libs.koin.test)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+
 
 }
