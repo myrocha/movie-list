@@ -1,6 +1,5 @@
-package br.com.movie.movielist.data
+package br.com.movie.movielist.data.service
 
-import br.com.movie.movielist.data.service.MovieService
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer

@@ -1,0 +1,70 @@
+package br.com.movie.movielist.data.repository
+
+import app.cash.turbine.test
+import br.com.movie.movielist.data.model.MovieListItemResponse
+import br.com.movie.movielist.data.model.MovieListResponse
+import br.com.movie.movielist.data.service.MovieService
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
+import org.junit.Assert
+import org.junit.Test
+
+class MovieRepositoryImplTest {
+
+    private val service: MovieService = mockk()
+    private val repository = MovieRepositoryImpl(service)
+
+    @Test
+    fun `when getMyLists is called then it should emit correctly mapped movie list`() =
+        runBlocking {
+            // GIVEN
+            val mockResponse = MovieListResponse(
+                page = 1,
+                totalPages = 10,
+                totalResults = 100,
+                results = listOf(
+                    MovieListItemResponse(
+                        id = 1,
+                        name = "Gladiador",
+                        description = "Filmes de tirar o fôlego",
+                        posterPath = "/path.jpg",
+                        favoriteCount = 10,
+                        itemCount = 5,
+                        iso6391 = "pt",
+                        listType = "movie"
+                    )
+                )
+            )
+            coEvery { service.getMyLists(any()) } returns mockResponse
+
+            repository.getMyLists(1).test {
+                val movies = awaitItem()
+
+                Assert.assertEquals(1, movies.size)
+                Assert.assertEquals("Gladiador", movies[0].name)
+                Assert.assertEquals(
+                    "https://image.tmdb.org/t/p/w500/path.jpg",
+                    movies[0].posterPath
+                )
+                awaitComplete()
+            }
+        }
+
+    @Test
+    fun `when getMyLists is called then it should emit empty mapped movie list`() = runBlocking {
+        val mockResponse = MovieListResponse(
+            page = 1,
+            totalPages = 0,
+            totalResults = 0,
+            results = null
+        )
+        coEvery { service.getMyLists(any()) } returns mockResponse
+
+        repository.getMyLists(1).test {
+            val movies = awaitItem()
+            Assert.assertEquals(0, movies.size)
+            awaitComplete()
+        }
+    }
+}
