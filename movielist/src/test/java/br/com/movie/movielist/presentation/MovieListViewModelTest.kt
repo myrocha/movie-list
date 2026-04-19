@@ -15,6 +15,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -66,7 +67,7 @@ class MovieListViewModelTest {
             viewModel.onAction(MovieListViewModel.Action.OnMovieClick(movieId))
 
             val event = awaitItem()
-            assert(event is MovieListViewModel.Event.NavigateToDetail)
+            assertTrue(event is MovieListViewModel.Event.NavigateToDetail)
             assertEquals(movieId, (event as MovieListViewModel.Event.NavigateToDetail).movieId)
         }
     }

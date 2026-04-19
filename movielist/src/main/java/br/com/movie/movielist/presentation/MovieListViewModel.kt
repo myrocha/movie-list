@@ -20,7 +20,9 @@ class MovieListViewModel(
             is Action.LoadMovies -> loadMovies()
             is Action.Retry -> loadMovies()
             is Action.OnMovieClick -> {
-                _event.trySend(Event.NavigateToDetail(action.movieId))
+                viewModelScope.launch {
+                    _event.send(Event.NavigateToDetail(action.movieId))
+                }
             }
         }
     }
