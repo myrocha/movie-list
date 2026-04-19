@@ -6,10 +6,13 @@ import br.com.movie.movielist.data.model.MovieListResponse
 import br.com.movie.movielist.data.service.MovieService
 import br.com.movie.movielist.domain.error.DataError
 import br.com.movie.movielist.domain.util.Result
+import com.google.gson.JsonParseException
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -17,6 +20,8 @@ import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
+import kotlin.coroutines.cancellation.CancellationException
+import kotlin.test.assertFailsWith
 
 class MovieRepositoryImplTest {
 
@@ -72,6 +77,43 @@ class MovieRepositoryImplTest {
             assertTrue(result is Result.Error)
             assertEquals(DataError.Network.SERVICE_UNAVAILABLE, (result as Result.Error).error)
             awaitComplete()
+        }
+    }
+
+    @Test    fun `when api throws JsonParseException then it should emit Result Error SERIALIZATION`() = runTest(testDispatcher) {
+        coEvery { service.getMyLists(any()) } throws JsonParseException("Malformed JSON")
+
+        repository.getMyLists(1).test {
+            val result = awaitItem()
+
+            assertTrue(result is Result.Error)
+            assertEquals(DataError.Network.SERIALIZATION, (result as Result.Error).error)
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `when api throws HttpException 401 then it should emit Result Error UNAUTHORIZED`() = runTest(testDispatcher) {
+        val errorResponse = "{}".toResponseBody("application/json".toMediaTypeOrNull())
+        val exception = HttpException(Response.error<Any>(401, errorResponse))
+
+        coEvery { service.getMyLists(any()) } throws exception
+
+        repository.getMyLists(1).test {
+            val result = awaitItem()
+
+            assertTrue(result is Result.Error)
+            assertEquals(DataError.Network.UNAUTHORIZED, (result as Result.Error).error)
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `when api throws CancellationException then it should rethrow the exception`() = runTest(testDispatcher) {
+        val exception = CancellationException("Job was cancelled")
+        coEvery { service.getMyLists(any()) } throws exception
+        assertFailsWith<CancellationException> {
+            repository.getMyLists(1).collect()
         }
     }
 }

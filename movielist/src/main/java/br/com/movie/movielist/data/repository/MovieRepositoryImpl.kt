@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlin.coroutines.cancellation.CancellationException
 
 class MovieRepositoryImpl(
     private val service: MovieService,
@@ -23,8 +24,9 @@ class MovieRepositoryImpl(
             try {
                 val response = service.getMyLists(page)
                 val domainMovies = response.results?.map { mapper.toDomain(it) } ?: emptyList()
-
                 emit(Result.Success(domainMovies))
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 emit(Result.Error(e.toNetworkError()))
             }
