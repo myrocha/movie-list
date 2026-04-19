@@ -1,15 +1,16 @@
 package br.com.movie.movielist.domain.usecase
 
 import app.cash.turbine.test
+import br.com.movie.movielist.domain.error.DataError
 import br.com.movie.movielist.domain.model.Movie
-import br.com.movie.movielist.domain.model.Resource
 import br.com.movie.movielist.domain.repository.MovieRepository
+import br.com.movie.movielist.domain.util.Result
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class GetMyListsUseCaseTest {
@@ -18,41 +19,27 @@ class GetMyListsUseCaseTest {
     private val useCase = GetMyListsUseCase(repository)
 
     @Test
-    fun `when invoke is called then it should emit Loading and Success states`() = runBlocking {
-        val movies = listOf(
-            Movie(
-                id = 1,
-                name = "Gladiador",
-                description = "Um herói romano",
-                posterPath = "https://image.tmdb.org/t/p/w500/path.jpg"
-            )
-        )
-        // Simulamos o repositório retornando um Flow de sucesso
-        every { repository.getMyLists(1) } returns flowOf(movies)
+    fun `when invoke is called then it should return success result from repository`() = runTest {
+        val movies = listOf(mockk<Movie>())
+        every { repository.getMyLists(1) } returns flowOf(Result.Success(movies))
 
         useCase(1).test {
-            assertEquals(Resource.Loading, awaitItem())
-
-            val successItem = awaitItem() as Resource.Success
-            assertEquals(movies, successItem.data)
-            assertEquals(1, successItem.data.size)
-            assertEquals("Gladiador", successItem.data[0].name)
-
+            val result = awaitItem()
+            assertTrue(result is Result.Success)
+            assertEquals(movies, (result as Result.Success).data)
             awaitComplete()
         }
     }
 
     @Test
-    fun `when invoke is called and repository fails then it should emit Loading and Error states`() = runBlocking {
-        val exception = Exception("Erro de conexão")
-        every { repository.getMyLists(1) } returns flow { throw exception }
+    fun `when repository returns error then usecase should emit the same error`() = runTest {
+        val networkError = DataError.Network.SERVICE_UNAVAILABLE
+        every { repository.getMyLists(1) } returns flowOf(Result.Error(networkError))
 
         useCase(1).test {
-            assertEquals(Resource.Loading, awaitItem())
-
-            val errorItem = awaitItem() as Resource.Error
-            assertEquals(exception, errorItem.exception)
-
+            val result = awaitItem()
+            assertTrue(result is Result.Error)
+            assertEquals(networkError, (result as Result.Error).error)
             awaitComplete()
         }
     }
