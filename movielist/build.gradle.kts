@@ -26,11 +26,17 @@ android {
             ?: System.getenv("TMDB_API_KEY")
             ?: ""
 
+        val accessToken = localProperties.getProperty("ACCESS_TOKEN")
+            ?: System.getenv("ACCESS_TOKEN")
+            ?: ""
+
         buildConfigField("String", "TMDB_API_KEY", "\"$apiKey\"")
+        buildConfigField("String", "ACCESS_TOKEN", "\"$accessToken\"")
     }
 
     buildFeatures {
         buildConfig = true
+        compose = true
     }
 
     buildTypes {
@@ -54,8 +60,6 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     // Retrofit & Network

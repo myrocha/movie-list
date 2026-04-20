@@ -14,20 +14,32 @@ data class MovieListResponse(
 )
 
 data class MovieListItemResponse(
-    @SerializedName("description")
-    val description: String?,
-    @SerializedName("favorite_count")
-    val favoriteCount: Int?,
     @SerializedName("id")
     val id: Int,
-    @SerializedName("item_count")
-    val itemCount: Int?,
-    @SerializedName("iso_639_1")
-    val iso6391: String?,
-    @SerializedName("list_type")
-    val listType: String?,
-    @SerializedName("name")
-    val name: String?,
+    @SerializedName("title")
+    val title: String?,
+    @SerializedName("original_title")
+    val originalTitle: String?,
+    @SerializedName("overview")
+    val overview: String?,
     @SerializedName("poster_path")
-    val posterPath: String?
+    val posterPath: String?,
+    @SerializedName("backdrop_path")
+    val backdropPath: String?,
+    @SerializedName("release_date")
+    val releaseDate: String?,
+    @SerializedName("vote_average")
+    val voteAverage: Double?,
+    @SerializedName("vote_count")
+    val voteCount: Int?,
+    @SerializedName("popularity")
+    val popularity: Double?,
+    @SerializedName("adult")
+    val adult: Boolean?,
+    @SerializedName("video")
+    val video: Boolean?,
+    @SerializedName("original_language")
+    val originalLanguage: String?,
+    @SerializedName("genre_ids")
+    val genreIds: List<Int>?
 )

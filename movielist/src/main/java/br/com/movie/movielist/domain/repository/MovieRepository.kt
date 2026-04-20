@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 import br.com.movie.movielist.domain.util.Result
 
 interface MovieRepository {
-    fun getMyLists(page: Int): Flow<Result<List<Movie>, DataError.Network>>
+    fun getMyLists(page: Int, language: String): Flow<Result<List<Movie>, DataError.Network>>
 }

@@ -4,8 +4,12 @@ import br.com.movie.movielist.data.model.MovieListResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface MovieService {@GET("account/23020224/lists")
-suspend fun getMyLists(
-    @Query("page") page: Int = 1
-): MovieListResponse
+interface MovieService {
+
+    @GET("movie/popular")
+    suspend fun getMyLists(
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ): MovieListResponse
+
 }
