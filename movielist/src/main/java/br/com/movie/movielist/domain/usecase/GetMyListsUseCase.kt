@@ -12,7 +12,7 @@ class GetMyListsUseCase(private val repository: MovieRepository) {
         language: String? = null
     ): Flow<Result<List<Movie>, DataError.Network>> {
         val validatedPage = if (page != null && page > 1) page else 1
-        val validatedLanguage = language ?: "en-US"
+        val validatedLanguage = language?.takeIf { it.isNotBlank() } ?: "en-US"
         return repository.getMyLists(validatedPage, validatedLanguage)
     }
 }
