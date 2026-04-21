@@ -75,6 +75,7 @@ fun MovieListScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .statusBarsPadding()
+                .navigationBarsPadding()
         ) {
             Text(
                 text = "Filmes Populares",
@@ -97,7 +98,7 @@ fun MovieListScreen(
                 contentPadding = PaddingValues(paddingMedium),
                 horizontalArrangement = Arrangement.spacedBy(spacingMedium),
                 verticalArrangement = Arrangement.spacedBy(spacingLarge),
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.weight(1f)
             ) {
                 if (uiState.isLoading) {
                     items(6) {
