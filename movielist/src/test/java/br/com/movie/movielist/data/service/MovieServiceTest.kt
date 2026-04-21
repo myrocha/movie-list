@@ -39,7 +39,7 @@ class MovieServiceTest {
                 "results": [
                     {
                         "id": 120174,
-                        "name": "Test Alpha Sort",
+                        "title": "Test Alpha Sort",
                         "description": "Filmes para teste",
                         "poster_path": "/path.jpg"
                     }
@@ -53,11 +53,11 @@ class MovieServiceTest {
                 .setBody(jsonResponse)
         )
 
-        val response = service.getMyLists(page = 1)
+        val response = service.getMyLists(page = 1, language = "")
 
         assertEquals(1, response.page)
         assertEquals(120174, response.results?.first()?.id)
-        assertEquals("Test Alpha Sort", response.results?.first()?.name)
+        assertEquals("Test Alpha Sort", response.results?.first()?.title)
     }
 
 }

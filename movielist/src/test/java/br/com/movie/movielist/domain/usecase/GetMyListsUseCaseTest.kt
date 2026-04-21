@@ -21,7 +21,7 @@ class GetMyListsUseCaseTest {
     @Test
     fun `when invoke is called then it should return success result from repository`() = runTest {
         val movies = listOf(mockk<Movie>())
-        every { repository.getMyLists(1) } returns flowOf(Result.Success(movies))
+        every { repository.getMyLists(1, "en-US") } returns flowOf(Result.Success(movies))
 
         useCase(1).test {
             val result = awaitItem()
@@ -34,7 +34,7 @@ class GetMyListsUseCaseTest {
     @Test
     fun `when repository returns error then usecase should emit the same error`() = runTest {
         val networkError = DataError.Network.SERVICE_UNAVAILABLE
-        every { repository.getMyLists(1) } returns flowOf(Result.Error(networkError))
+        every { repository.getMyLists(1, "en-US") } returns flowOf(Result.Error(networkError))
 
         useCase(1).test {
             val result = awaitItem()

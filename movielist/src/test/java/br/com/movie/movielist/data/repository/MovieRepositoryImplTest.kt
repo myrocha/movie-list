@@ -39,9 +39,9 @@ class MovieRepositoryImplTest {
             totalPages = 1,
             totalResults = 0
         )
-        coEvery { service.getMyLists(any()) } returns mockResponse
+        coEvery { service.getMyLists(any(), any()) } returns mockResponse
 
-        repository.getMyLists(1).test {
+        repository.getMyLists(1, "").test {
             val result = awaitItem()
 
             assertTrue(result is Result.Success)
@@ -52,9 +52,9 @@ class MovieRepositoryImplTest {
 
     @Test
     fun `when api throws IOException then it should emit Result Error NO_INTERNET`() = runTest(testDispatcher) {
-        coEvery { service.getMyLists(any()) } throws IOException()
+        coEvery { service.getMyLists(any(), any()) } throws IOException()
 
-        repository.getMyLists(1).test {
+        repository.getMyLists(1, "").test {
             val result = awaitItem()
 
             assertTrue(result is Result.Error)
@@ -69,9 +69,9 @@ class MovieRepositoryImplTest {
             500,
             "Internal Server Error".toResponseBody(null)
         )
-        coEvery { service.getMyLists(any()) } throws HttpException(errorResponse)
+        coEvery { service.getMyLists(any(), any()) } throws HttpException(errorResponse)
 
-        repository.getMyLists(1).test {
+        repository.getMyLists(1, "").test {
             val result = awaitItem()
 
             assertTrue(result is Result.Error)
@@ -81,9 +81,9 @@ class MovieRepositoryImplTest {
     }
 
     @Test    fun `when api throws JsonParseException then it should emit Result Error SERIALIZATION`() = runTest(testDispatcher) {
-        coEvery { service.getMyLists(any()) } throws JsonParseException("Malformed JSON")
+        coEvery { service.getMyLists(any(), any()) } throws JsonParseException("Malformed JSON")
 
-        repository.getMyLists(1).test {
+        repository.getMyLists(1, "").test {
             val result = awaitItem()
 
             assertTrue(result is Result.Error)
@@ -97,9 +97,9 @@ class MovieRepositoryImplTest {
         val errorResponse = "{}".toResponseBody("application/json".toMediaTypeOrNull())
         val exception = HttpException(Response.error<Any>(401, errorResponse))
 
-        coEvery { service.getMyLists(any()) } throws exception
+        coEvery { service.getMyLists(any(), any()) } throws exception
 
-        repository.getMyLists(1).test {
+        repository.getMyLists(1, "").test {
             val result = awaitItem()
 
             assertTrue(result is Result.Error)
@@ -111,9 +111,9 @@ class MovieRepositoryImplTest {
     @Test
     fun `when api throws CancellationException then it should rethrow the exception`() = runTest(testDispatcher) {
         val exception = CancellationException("Job was cancelled")
-        coEvery { service.getMyLists(any()) } throws exception
+        coEvery { service.getMyLists(any(), any()) } throws exception
         assertFailsWith<CancellationException> {
-            repository.getMyLists(1).collect()
+            repository.getMyLists(1, "").collect()
         }
     }
 }

@@ -30,7 +30,7 @@ class MovieListViewModel(
     private fun loadMovies() {
         fetchJob?.cancel()
         fetchJob = viewModelScope.launch {
-            getMyListsUseCase(page = 1)
+            getMyListsUseCase(page = 1, language = "en-US")
                 .handleStates(_uiState) { movies ->
                     _uiState.update { it.copy(movies = movies) }
                 }

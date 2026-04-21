@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val networkModule = module {
 
-    single { AuthInterceptor(BuildConfig.TMDB_API_KEY) }
+    single { AuthInterceptor(BuildConfig.ACCESS_TOKEN) }
 
     single {
         OkHttpClient.Builder()

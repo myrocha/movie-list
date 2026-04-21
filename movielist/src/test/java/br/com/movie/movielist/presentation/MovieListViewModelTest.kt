@@ -43,7 +43,7 @@ class MovieListViewModelTest {
         val mockMovies = listOf(mockk<Movie>(relaxed = true))
         val successResult = Result.Success(mockMovies)
 
-        coEvery { getMyListsUseCase(page = 1) } returns flowOf(successResult)
+        coEvery { getMyListsUseCase(page = 1, language = "en-US") } returns flowOf(successResult)
 
         viewModel.uiState.test {
             val initialState = awaitItem()

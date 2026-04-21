@@ -11,21 +11,28 @@ class MovieMapperImplTest {
     @Test
     fun `when mapper receives a valid dto then it should return a domain movie with full image url`() {
         val dto = MovieListItemResponse(
-            id = 1,
-            name = "Gladiador",
-            description = "Descrição",
-            posterPath = "/path.jpg",
-            favoriteCount = 0,
-            itemCount = 0,
-            iso6391 = "pt",
-            listType = "movie"
+            id = 1226863,
+            title = "The Super Mario Galaxy Movie", // API de filmes usa title
+            originalTitle = "The Super Mario Galaxy Movie",
+            overview = "Having thwarted Bowser's previous plot...", // API usa overview
+            posterPath = "/eJGWx219ZcEMVQJhAgMiqo8tYY.jpg",
+            backdropPath = "/9Z2uDYXqJrlmePznQQJhL6d92Rq.jpg",
+            releaseDate = "2026-04-01",
+            voteAverage = 6.8,
+            voteCount = 506,
+            popularity = 780.1539,
+            adult = false,
+            video = false,
+            originalLanguage = "en",
+            genreIds = listOf(10751, 35, 12, 14, 16)
         )
 
         val result = mapper.toDomain(dto)
 
-        val expectedUrl = "https://image.tmdb.org/t/p/w500/path.jpg"
-        assertEquals(1, result.id)
-        assertEquals("Gladiador", result.name)
+        val expectedUrl = "https://image.tmdb.org/t/p/w500/eJGWx219ZcEMVQJhAgMiqo8tYY.jpg"
+
+        assertEquals(1226863, result.id)
+        assertEquals("The Super Mario Galaxy Movie", result.name)
         assertEquals(expectedUrl, result.posterPath)
     }
 
@@ -33,13 +40,19 @@ class MovieMapperImplTest {
     fun `when mapper receives a null posterPath then it should return an empty string for image url`() {
         val dto = MovieListItemResponse(
             id = 2,
-            name = "Filme Sem Foto",
-            description = null,
+            title = "Filme Sem Foto",
+            originalTitle = null,
+            overview = null,
             posterPath = null,
-            favoriteCount = 0,
-            itemCount = 0,
-            iso6391 = "en",
-            listType = "movie"
+            backdropPath = null,
+            releaseDate = null,
+            voteAverage = null,
+            voteCount = null,
+            popularity = null,
+            adult = null,
+            video = null,
+            originalLanguage = null,
+            genreIds = null
         )
 
         val result = mapper.toDomain(dto)
@@ -51,20 +64,25 @@ class MovieMapperImplTest {
     fun `when mapper receives null fields then it should return default values`() {
         val dto = MovieListItemResponse(
             id = 0,
-            name = null,
-            description = null,
+            title = null,
+            originalTitle = null,
+            overview = null,
             posterPath = null,
-            favoriteCount = null,
-            itemCount = null,
-            iso6391 = null,
-            listType = null
+            backdropPath = null,
+            releaseDate = null,
+            voteAverage = null,
+            voteCount = null,
+            popularity = null,
+            adult = null,
+            video = null,
+            originalLanguage = null,
+            genreIds = null
         )
 
         val result = mapper.toDomain(dto)
 
         assertEquals(0, result.id)
         assertEquals("", result.name)
-        assertEquals("", result.description)
         assertEquals("", result.posterPath)
     }
 }

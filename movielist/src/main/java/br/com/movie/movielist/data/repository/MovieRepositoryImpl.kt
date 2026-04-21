@@ -19,10 +19,10 @@ class MovieRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher
 ) : MovieRepository {
 
-    override fun getMyLists(page: Int): Flow<Result<List<Movie>, DataError.Network>> =
+    override fun getMyLists(page: Int, language: String): Flow<Result<List<Movie>, DataError.Network>> =
         flow {
             try {
-                val response = service.getMyLists(page)
+                val response = service.getMyLists(language, page)
                 val domainMovies = response.results?.map { mapper.toDomain(it) } ?: emptyList()
                 emit(Result.Success(domainMovies))
             } catch (e: CancellationException) {

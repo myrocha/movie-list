@@ -11,8 +11,8 @@ class MovieMapperImpl : MovieMapper {
     override fun toDomain(response: MovieListItemResponse): Movie {
         return Movie(
             id = response.id,
-            name = response.name.orEmpty(),
-            description = response.description.orEmpty(),
+            name = response.title.orEmpty(),
+            description = response.overview.orEmpty(),
             posterPath = response.posterPath?.let { path ->
                 "https://image.tmdb.org/t/p/w500$path"
             }.orEmpty()
