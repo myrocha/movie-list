@@ -5,5 +5,5 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel { MovieListViewModel(get()) } // <--- O Koin guarda a "receita" de como criar a ViewModel aqui
+    viewModel { MovieListViewModel(get()) }
 }

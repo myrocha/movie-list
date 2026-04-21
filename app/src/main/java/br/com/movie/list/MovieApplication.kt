@@ -15,12 +15,11 @@ class MovieApplication : Application() {
         startKoin {
             androidContext(this@MovieApplication)
 
-            // Você deve listar todos os módulos aqui
             modules(
                 listOf(
                     networkModule,
-                    movieListModule,   // Contém Repository, UseCase, Mapper
-                    viewModelModule    // O módulo onde você deu o 'viewModel { MovieListViewModel(get()) }'
+                    movieListModule,
+                    viewModelModule
                 )
             )
         }
