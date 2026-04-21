@@ -105,7 +105,10 @@ fun MovieListScreen(
                     }
                 } else {
                     items(uiState.movies) { movie ->
-                        MovieItem(movie)
+                        MovieItem(
+                            movie = movie,
+                            onClick =  {onNavigateToDetail(movie.id)}
+                        )
                     }
                 }
             }
@@ -114,7 +117,7 @@ fun MovieListScreen(
 }
 
 @Composable
-fun MovieItem(movie: Movie) {
+fun MovieItem(movie: Movie, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -155,7 +158,7 @@ fun MovieItem(movie: Movie) {
                     )
                     Spacer(modifier = Modifier.width(spacingExtraSmall))
                     Text(
-                        text = String.format("%.1f", movie.voteAverage),
+                        text = movie.voteAverage,
                         color = Color.White,
                         style = MaterialTheme.typography.labelMedium
                     )

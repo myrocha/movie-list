@@ -2,6 +2,7 @@ package br.com.movie.movielist.data.mapper
 
 import br.com.movie.movielist.data.model.MovieListItemResponse
 import br.com.movie.movielist.domain.model.Movie
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -14,6 +15,8 @@ private val displayFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault(
 
 private val lock = Any()
 
+private const val EMPTY = ""
+
 class MovieMapperImpl : MovieMapper {
     override fun toDomain(response: MovieListItemResponse): Movie {
         return Movie(
@@ -24,7 +27,7 @@ class MovieMapperImpl : MovieMapper {
                 "https://image.tmdb.org/t/p/w500$path"
             }.orEmpty(),
             releaseDate = response.releaseDate.formatToDisplay(),
-            voteAverage = response.voteAverage ?: 0.0
+            voteAverage = String.format(Locale.US, "%.1f", response.voteAverage ?: 0.0)
         )
     }
 }
@@ -37,7 +40,7 @@ private fun String?.formatToDisplay(): String {
             val date = apiFormatter.parse(this)
             date?.let { displayFormatter.format(it) } ?: ""
         }
-    } catch (e: Exception) {
-        ""
+    } catch (e: ParseException) {
+        EMPTY
     }
 }
