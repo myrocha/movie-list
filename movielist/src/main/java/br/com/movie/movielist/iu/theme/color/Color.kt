@@ -1,4 +1,4 @@
-package br.com.movie.movielist.iu.theme
+package br.com.movie.movielist.iu.theme.color
 
 import androidx.compose.ui.graphics.Color
 
