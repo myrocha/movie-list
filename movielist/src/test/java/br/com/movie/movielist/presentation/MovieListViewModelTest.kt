@@ -1,6 +1,7 @@
 package br.com.movie.movielist.presentation
 
 import app.cash.turbine.test
+import br.com.movie.movielist.domain.error.DataError
 import br.com.movie.movielist.domain.model.Movie
 import br.com.movie.movielist.domain.usecase.GetMyListsUseCase
 import br.com.movie.movielist.domain.util.Result
@@ -18,6 +19,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import br.com.movie.movielist.domain.util.Result.Error
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MovieListViewModelTest {
@@ -56,6 +58,25 @@ class MovieListViewModelTest {
             assertEquals(false, successState.isLoading)
 
             expectNoEvents()
+        }
+    }
+
+    @Test
+    fun `when LoadMovies fails, should update state with error and stop loading`() = runTest {
+        val errorResult = Error(DataError.Network.NO_INTERNET)
+
+        coEvery {
+            getMyListsUseCase(page = 1, language = "en-US")
+        } returns flowOf(errorResult)
+
+        viewModel.uiState.test {
+            awaitItem()
+
+            viewModel.onAction(MovieListViewModel.Action.LoadMovies)
+
+            val errorState = awaitItem()
+            assertEquals(false, errorState.isLoading)
+            assertTrue(errorState.movies.isEmpty())
         }
     }
 

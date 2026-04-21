@@ -7,6 +7,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -62,6 +63,23 @@ fun MovieListScreen(
         viewModel.onAction(MovieListViewModel.Action.LoadMovies)
     }
 
+    MovieListScreenContent(
+        uiState = uiState,
+        onAction = { action ->
+            if (action is MovieListViewModel.Action.OnMovieClick) {
+                onNavigateToDetail(action.movieId)
+            } else {
+                viewModel.onAction(action)
+            }
+        }
+    )
+}
+
+@Composable
+fun MovieListScreenContent(
+    uiState: MovieListUiState,
+    onAction: (MovieListViewModel.Action) -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -108,7 +126,7 @@ fun MovieListScreen(
                     items(uiState.movies) { movie ->
                         MovieItem(
                             movie = movie,
-                            onClick =  {onNavigateToDetail(movie.id)}
+                            onClick = { onAction(MovieListViewModel.Action.OnMovieClick(movie.id)) }
                         )
                     }
                 }
@@ -122,6 +140,7 @@ fun MovieItem(movie: Movie, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick() }
     ) {
         Box(
             modifier = Modifier
@@ -148,7 +167,10 @@ fun MovieItem(movie: Movie, onClick: () -> Unit) {
                 modifier = Modifier.align(Alignment.TopEnd)
             ) {
                 Row(
-                    modifier = Modifier.padding(horizontal = paddingSmall, vertical = spacingExtraSmall),
+                    modifier = Modifier.padding(
+                        horizontal = paddingSmall,
+                        vertical = spacingExtraSmall
+                    ),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(

@@ -33,6 +33,14 @@ android {
 
         buildConfigField("String", "TMDB_API_KEY", "\"$apiKey\"")
         buildConfigField("String", "ACCESS_TOKEN", "\"$accessToken\"")
+
+        packaging {
+            resources {
+                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+                excludes += "/META-INF/LICENSE.md"
+                excludes += "/META-INF/LICENSE-notice.md"
+            }
+        }
     }
 
     buildFeatures {
@@ -85,4 +93,9 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.turbine)
     debugImplementation(libs.androidx.ui.tooling)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.mockk.agent)
+
 }
