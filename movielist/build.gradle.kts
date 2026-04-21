@@ -33,13 +33,12 @@ android {
 
         buildConfigField("String", "TMDB_API_KEY", "\"$apiKey\"")
         buildConfigField("String", "ACCESS_TOKEN", "\"$accessToken\"")
-
-        packaging {
-            resources {
-                excludes += "/META-INF/{AL2.0,LGPL2.1}"
-                excludes += "/META-INF/LICENSE.md"
-                excludes += "/META-INF/LICENSE-notice.md"
-            }
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
         }
     }
 

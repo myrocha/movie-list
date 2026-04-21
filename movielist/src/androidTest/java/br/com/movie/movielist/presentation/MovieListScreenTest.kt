@@ -5,10 +5,11 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.com.movie.movielist.domain.model.Movie
-import org.junit.Rule
-import org.junit.Test
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.Assert
+import org.junit.Rule
+import org.junit.Test
 
 class MovieListScreenTest {
 
@@ -63,7 +64,7 @@ class MovieListScreenTest {
 
         composeTestRule.onNodeWithText(movieName).performClick()
 
-        assert(capturedMovieId == movieId)
+        Assert.assertEquals(movieId, capturedMovieId)
     }
 
     @Test
