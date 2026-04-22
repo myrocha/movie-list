@@ -1,6 +1,10 @@
-package br.com.movie.movielist.presentation
+package br.com.movie.movielist.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import br.com.movie.movielist.core.presentation.ActionHandler
+import br.com.movie.movielist.core.presentation.BaseViewModel
+import br.com.movie.movielist.core.presentation.UiAction
+import br.com.movie.movielist.core.presentation.UiEvent
 import br.com.movie.movielist.domain.usecase.GetMyListsUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect

@@ -1,4 +1,4 @@
-package br.com.movie.movielist.presentation
+package br.com.movie.movielist.core.presentation
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.channels.Channel
