@@ -12,9 +12,9 @@ class MovieMapperImplTest {
     fun `when mapper receives a valid dto then it should return a domain movie with full image url`() {
         val dto = MovieListItemResponse(
             id = 1226863,
-            title = "The Super Mario Galaxy Movie", // API de filmes usa title
+            title = "The Super Mario Galaxy Movie",
             originalTitle = "The Super Mario Galaxy Movie",
-            overview = "Having thwarted Bowser's previous plot...", // API usa overview
+            overview = "Having thwarted Bowser's previous plot...",
             posterPath = "/eJGWx219ZcEMVQJhAgMiqo8tYY.jpg",
             backdropPath = "/9Z2uDYXqJrlmePznQQJhL6d92Rq.jpg",
             releaseDate = "2026-04-01",
