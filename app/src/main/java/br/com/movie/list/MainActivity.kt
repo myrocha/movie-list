@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.movie.list.ui.theme.MovielistTheme
-import br.com.movie.movielist.presentation.MovieListScreen
+import br.com.movie.movielist.presentation.view.MovieListScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -4,7 +4,12 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import br.com.movie.movielist.R
 import br.com.movie.movielist.domain.model.Movie
+import br.com.movie.movielist.presentation.model.DataErrorVO
+import br.com.movie.movielist.presentation.view.MovieListScreenContent
+import br.com.movie.movielist.presentation.viewmodel.MovieListUiState
+import br.com.movie.movielist.presentation.viewmodel.MovieListViewModel
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert
@@ -86,6 +91,74 @@ class MovieListScreenTest {
         composeTestRule
             .onNodeWithText(movieName)
             .assertDoesNotExist()
+    }
+
+    @Test
+    fun when_error_is_present_should_display_error_message() {
+        val errorTitle = "Sem Conexão"
+        val errorDescription = "Não foi possível conectar ao servidor. Verifique sua conexão com a internet e tente novamente."
+
+        composeTestRule.setContent {
+            MovieListScreenContent(
+                uiState = MovieListUiState(
+                    isLoading = false,
+                    error = DataErrorVO(
+                        title = R.string.error_no_internet_title,
+                        description = R.string.error_no_internet_description,
+                        imageRes = R.drawable.icon_wifi_off
+                    )
+                ),
+                onAction = {}
+            )
+        }
+
+        composeTestRule.onNodeWithText(errorTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithText(errorDescription).assertIsDisplayed()
+    }
+
+    @Test
+    fun when_list_is_empty_and_not_loading_should_display_empty_state_message() {
+        val emptyStateTitle = "Nenhum filme encontrado"
+
+        composeTestRule.setContent {
+            MovieListScreenContent(
+                uiState = MovieListUiState(
+                    movies = emptyList(),
+                    isLoading = false,
+                    error = null
+                ),
+                onAction = {}
+            )
+        }
+
+        composeTestRule.onNodeWithText(emptyStateTitle).assertIsDisplayed()
+    }
+
+    @Test
+    fun when_retry_button_is_clicked_should_trigger_LoadMovies_action() {
+        var retryTriggered = false
+
+        composeTestRule.setContent {
+            MovieListScreenContent(
+                uiState = MovieListUiState(
+                    isLoading = false,
+                    error = DataErrorVO(
+                        title = R.string.error_generic_title,
+                        description = R.string.error_generic_description,
+                        imageRes = R.drawable.icon_alert_triangle
+                    )
+                ),
+                onAction = { action ->
+                    if (action is MovieListViewModel.Action.LoadMovies) {
+                        retryTriggered = true
+                    }
+                }
+            )
+        }
+
+        composeTestRule.onNodeWithText("Tentar Novamente").performClick()
+
+        Assert.assertTrue(retryTriggered)
     }
 
 }

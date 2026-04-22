@@ -20,6 +20,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import br.com.movie.movielist.domain.util.Result.Error
+import br.com.movie.movielist.presentation.viewmodel.MovieListViewModel
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MovieListViewModelTest {
