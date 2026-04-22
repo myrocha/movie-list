@@ -4,6 +4,17 @@ O MovieList é um aplicativo Android moderno que permite explorar os filmes mais
 
 🎨 O design foi baseado neste [protótipo do Figma](https://www.figma.com/make/Vwm2wvKtkr7cPyCNuNovbN/Tela-de-listagem-de-filmes?p=f&t=Ag2QriblAfZbB1Ek-0&fullscreen=1).
 
+## 📸 Screenshots
+
+| Lista de Filmes | Shimmer Loading | Erro de Conexão |
+| :---: | :---: | :---: |
+| <img src="screenshots/home.png" width="250" /> | <img src="screenshots/loading.png" width="250" /> | <img src="screenshots/error.png" width="250" /> |
+
+| Lista Vazia |
+| :---: |
+| <img src="screenshots/empty.png" width="250" />
+
+
 🌐 API Consumida
 
 O projeto consome a API oficial do The Movie Database (TMDB).
