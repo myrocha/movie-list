@@ -8,11 +8,16 @@ O MovieList é um aplicativo Android moderno que permite explorar os filmes mais
 
 | Lista de Filmes | Shimmer Loading | Erro de Conexão |
 | :---: | :---: | :---: |
-| <img src="screenshots/home.png" width="250" /> | <img src="screenshots/loading.png" width="250" /> | <img src="screenshots/error.png" width="250" /> |
+| <img width="355" alt="Lista de Filmes" src="https://github.com/user-attachments/assets/d35b1591-0fd3-4643-98a7-f9f0c5803a88" /> | <img width="341" alt="Shimmer Loading" src="https://github.com/user-attachments/assets/94069d43-4039-4156-9fc5-dd910682ccbd" /> | <img width="338" alt="Erro de Conexão" src="https://github.com/user-attachments/assets/7cdc5b35-3652-4cb5-b0d7-99e3a6843209" /> |
 
-| Lista Vazia |
-| :---: |
-| <img src="screenshots/empty.png" width="250" />
+| Lista Vazia | Erro Genérico |
+| :---: | :---: |
+| <img width="339" alt="Lista Vazia" src="https://github.com/user-attachments/assets/fb0c6168-c003-4a20-800e-2e8914ca4c5f" /> |<img width="339" height="720" alt="Captura de Tela 2026-04-22 às 01 12 51" src="https://github.com/user-attachments/assets/693fe414-481c-4b81-8f49-7e2497c17d7b" /> |
+
+
+
+
+
 
 
 🌐 API Consumida
